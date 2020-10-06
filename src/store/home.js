@@ -26,7 +26,6 @@ const actions = {
     }
   }
 }
-console.log(111);
 
 //通过state计算出来的属性数据（只有读没有写，只能使用state数据不能修改state数据）
 const getters = {}
