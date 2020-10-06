@@ -7,18 +7,26 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 export default {
-  name: 'App',
-  components:{
+  name: "App",
+  components: {
     Header,
-    Footer
-  }
-}
+    Footer,
+  },
+  mounted() {
+    this.getCategoryList();
+  },
+  methods: {
+    getCategoryList() {
+      //   用户在触发响应的actions去发请求拿数据
+      this.$store.dispatch("getCategoryList");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-
 </style>
 

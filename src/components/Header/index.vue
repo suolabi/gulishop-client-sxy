@@ -70,7 +70,18 @@ export default {
         name: "search",
         params: { keyword: this.keyword || undefined },
       };
-      this.$router.push(location);
+      // 判断是否有query参数
+      let { query } = this.$route;
+      if (query) {
+        location.query = query;
+      }
+
+      //判断当前路由路径是什么，如果是home，那么我们就push，如果不是home那就replace
+      if (this.$route.path !== "/home") {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
     },
   },
 };

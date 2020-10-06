@@ -4,57 +4,59 @@
     <div class="container">
       <div @mouseleave="moveOutDiv" @mouseenter="moveInDiv">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort" v-show="isShow">
-          <div class="all-sort-list2" @click="toSearch">
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              :class="{ item_on: currentIndex === index }"
-              @mouseenter="moveIn(index)"
-            >
-              <h3>
-                <a
-                  href="javascript:;"
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-              </h3>
-              <div class="item-list clearfix">
-                <div class="subitem">
-                  <dl
-                    class="fore"
-                    v-for="(c2, index) in c1.categoryChild"
-                    :key="c2.categoryId"
+        <transition name="show">
+          <div class="sort" v-show="isShow">
+            <div class="all-sort-list2" @click="toSearch">
+              <div
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ item_on: currentIndex === index }"
+                @mouseenter="moveIn(index)"
+              >
+                <h3>
+                  <a
+                    href="javascript:;"
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
                   >
-                    <dt>
-                      <a
-                        href="javascript:;"
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                    </dt>
-                    <dd>
-                      <em
-                        v-for="(c3, index) in c2.categoryChild"
-                        :key="c3.categoryId"
-                      >
+                </h3>
+                <div class="item-list clearfix">
+                  <div class="subitem">
+                    <dl
+                      class="fore"
+                      v-for="(c2, index) in c1.categoryChild"
+                      :key="c2.categoryId"
+                    >
+                      <dt>
                         <a
                           href="javascript:;"
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                      </em>
-                    </dd>
-                  </dl>
+                      </dt>
+                      <dd>
+                        <em
+                          v-for="(c3, index) in c2.categoryChild"
+                          :key="c3.categoryId"
+                        >
+                          <a
+                            href="javascript:;"
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
 
       <nav class="nav">
@@ -79,21 +81,22 @@ export default {
   data() {
     return {
       currentIndex: -1,
-      isShow:true
+      isShow: true,
     };
   },
   mounted() {
-    this.getCategoryList()
+    // 放到这里会发多次请求，分别是home和search,放到App中发请求就能避免这个问题
+    // this.getCategoryList();
     // 为了判断是在home页还是在search页，如果是search页那么我们要首先隐藏掉三级分类列表
-    if(this.$route.path !=='/home'){
-      this.isShow = false
+    if (this.$route.path !== "/home") {
+      this.isShow = false;
     }
   },
   methods: {
-    getCategoryList() {
-      //   用户在触发响应的actions去发请求拿数据
-      this.$store.dispatch("getCategoryList");
-    },
+    // getCategoryList() {
+    //   //   用户在触发响应的actions去发请求拿数据
+    //   this.$store.dispatch("getCategoryList");
+    // },
 
     // 鼠标移入事件
     // 也是需要节流的函数
@@ -106,14 +109,14 @@ export default {
       { trailing: false }
     ),
 
-    moveInDiv(){
-      this.isShow = true
+    moveInDiv() {
+      this.isShow = true;
     },
 
-    moveOutDiv(){
-      this.currentIndex = -1
-      if(this.$route.path !== '/home'){
-        this.isShow = false
+    moveOutDiv() {
+      this.currentIndex = -1;
+      if (this.$route.path !== "/home") {
+        this.isShow = false;
       }
     },
 
@@ -144,11 +147,21 @@ export default {
         } else {
           query.category3Id = category3id;
         }
-
         //把query参数放到location当中
         location.query = query;
 
-        this.$router.push(location);
+        // 判断是否有params参数
+        let { params } = this.$route;
+        if (params) {
+          location.params = params;
+        }
+
+        //判断当前路由路径是什么，如果是home，那么我们就push，如果不是home那就replace
+        if (this.$route.path !== "/home") {
+          this.$router.replace(location);
+        } else {
+          this.$router.push(location);
+        }
       }
     },
   },
@@ -199,8 +212,23 @@ export default {
       width: 210px;
       height: 461px;
       position: absolute;
-      background: #fafafa;
+      // background: #fafafa;
+      background: Aquamarine;
       z-index: 999;
+
+      &.show-enter {
+        height: 0;
+        opacity: 0;
+      }
+
+      &.show-enter-active {
+        transition: all 1s;
+      }
+
+      &.show-enter-to {
+        height: 461px;
+        opacity: 1;
+      }
 
       .all-sort-list2 {
         .item {
