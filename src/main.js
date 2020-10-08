@@ -6,7 +6,9 @@ import "@/mock/mockServer"
 
 Vue.config.productionTip = false
 
-import {reqCategoryList} from '@/api'
+// import '@/api'
+
+// import {reqCategoryList} from '@/api'
 // reqCategoryList()
 
 //全局注册的各种组件，因为很多地方用到

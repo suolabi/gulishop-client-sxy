@@ -3,7 +3,7 @@
 //以后哪里需要数据，那我就调哪一个相应的接口请求函数就ok
 import Ajax from '@/ajax/Ajax'
 import mockAjax from '@/ajax/mockAjax'
-import search from '@/store/search'
+
 
 
 
@@ -63,4 +63,5 @@ export const reqGoodsListInfo = (searchParams)=>{
 //searchParams代表的是搜索参数  如果搜索参数里面什么都没有  只是一个{} 也没问题
 //返回的是所有的商品信息
 //如果搜索参数当中有东西，那么返回的就是按照这些参数搜索到的商品信息
-//我们测试的时候可以使用{}去作为参数发请求，但是不能不传递参数，不传递那么就相当于没有传递参数undefined
+//我们测试的时候可以使用{}去作为参数发请求，但是不能不传递参数，不传递那么就相当于没有传递参数undefined，会报错
+// reqGoodsListInfo({})   
