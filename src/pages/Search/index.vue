@@ -13,31 +13,55 @@
           <ul class="fl sui-tag">
             <li class="with-x" v-show="searchParams.categoryName">
               {{ searchParams.categoryName }}
-              <!-- <i @click="removeCategoryName">×</i> -->
+              <i @click="removeCategoryName">×</i>
             </li>
 
             <li class="with-x" v-show="searchParams.keyword">
               {{ searchParams.keyword }}
-              <!-- <i @click="removekeyword">×</i> -->
+              <i @click="removeKeyword">×</i>
             </li>
 
-            <li class="with-x" v-show="searchParams.trademark">
-              {{ searchParams.trademark}}
-              <!-- <i @click="removekeyword">×</i> -->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1] }}
+              <i @click="removeTrademark">×</i>
+            </li>
+
+            <li
+              class="with-x"
+              v-for="(props, index) in searchParams.props"
+              :key="index"
+            >
+              {{ props.split(":")[1] }}
+              <i @click="removeProps">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector
+          @searchForTrademark="searchForTrademark"
+          @searchForProps="searchForProps"
+        />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li
+                  :class="{ active: sortFlag === '1' }"
+                >
+                  <a href="javascript:;" @click="sortGoods('1')"
+                    >综合
+                    <i
+                      v-if="sortFlag === '1'"
+                      class="iconfont"
+                      :class="{
+                        iconup: sortType === 'asc',
+                        icondown: sortType === 'desc',
+                      }"
+                    ></i>
+                  </a>
                 </li>
                 <li>
                   <a href="#">销量</a>
@@ -48,11 +72,20 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li
+                  :class="{ active: sortFlag === '2' }"
+                >
+                  <a href="javascript:;" @click="sortGoods('2')"
+                    >价格
+                    <i
+                      v-if="sortFlag === '2'"
+                      class="iconfont"
+                      :class="{
+                        iconup: sortType === 'asc',
+                        icondown: sortType === 'desc',
+                      }"
+                    ></i>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -157,7 +190,7 @@ export default {
         trademark: "", //按照品牌搜索的参数
 
         //代表的是用户发送请求默认的参数  默认获取第几页  默认排序规则是什么  默认每页个数
-        order: "1:desc",
+        order: "1:asc",
         //排序标志 1和2        1代表是综合排序  2代表价格排序
         //排序类型 desc和asc   desc代表降序   asc升序
 
@@ -204,8 +237,65 @@ export default {
     this.getGoodsListInfo();
   },
   methods: {
+    sortGoods(sortFlag) {
+      let originSortFlag = this.searchParams.order.split(":")[0];
+      let originSortType = this.searchParams.order.split(":")[1];
+      let newOrder = "";
+      if (sortFlag === originSortFlag) {
+        newOrder = `${originSortFlag}:${
+          originSortType === "asc" ? "desc" : "asc"
+        }`;
+      } else {
+        newOrder = `${sortFlag}:desc`;
+      }
+      // 更新新的排序
+      this.searchParams.order = newOrder;
+      // 重新发请求
+      this.getGoodsListInfo();
+    },
+
+    removeProps(index) {
+      // 找到index下标，删除1个
+      this.searchParams.props.splice(index, 1);
+      // 重新发送请求
+      this.getGoodsListInfo();
+    },
+    // 根据属性搜索
+    searchForProps(attr, attrValue) {
+      let prop = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      let repeat = this.searchParams.props.some((item) => item === prop);
+      if (repeat) return;
+      this.searchParams.props.push(prop);
+      this.getGoodsListInfo();
+    },
+    // 删除面包屑品牌名
+    removeTrademark() {
+      this.searchParams.trademark = undefined;
+      // 重新发送请求
+      this.getGoodsListInfo();
+    },
+
+    searchForTrademark(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getGoodsListInfo();
+    },
+
     getGoodsListInfo() {
       this.$store.dispatch("getGoodsListInfo", this.searchParams);
+    },
+
+    // 删除面包屑query参数
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined;
+      this.$router.replace({ name: "search", params: this.$route.params });
+    },
+
+    // 删除面包屑params参数
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      // 通知header组件把输入框当中的keyword清空
+      this.$bus.$emit("clearKeyword");
+      this.$router.replace({ name: "search", query: this.$route.query });
     },
 
     // 封装函数
@@ -249,6 +339,14 @@ export default {
     // ...mapGetters(["attrsList", "goodsList", "trademarkList"]),
     ...mapGetters(["goodsList"]), //父组件search当中只需要拿到商品列表去展示
     //attrsList  trademarkList 两个数据是子组件需要展示的，到子组件当中去获取，可以避免组件通信
+
+    sortFlag(){
+      return this.searchParams.order.split(':')[0]
+    },
+
+    sortType(){
+      return this.searchParams.order.split(':')[1]
+    }
   },
 
   watch: {

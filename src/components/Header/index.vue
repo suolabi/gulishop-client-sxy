@@ -64,7 +64,13 @@ export default {
       keyword: "",
     };
   },
+  mounted(){
+    this.$bus.$on('clearKeyword',this.clearKeyword)
+  },
   methods: {
+    clearKeyword(){
+      this.keyword = ""
+    },
     toSearch() {
       let location = {
         name: "search",
