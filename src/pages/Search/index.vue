@@ -48,9 +48,7 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li
-                  :class="{ active: sortFlag === '1' }"
-                >
+                <li :class="{ active: sortFlag === '1' }">
                   <a href="javascript:;" @click="sortGoods('1')"
                     >综合
                     <i
@@ -72,9 +70,7 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li
-                  :class="{ active: sortFlag === '2' }"
-                >
+                <li :class="{ active: sortFlag === '2' }">
                   <a href="javascript:;" @click="sortGoods('2')"
                     >价格
                     <i
@@ -135,35 +131,12 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination
+            :currentPageNum="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="goodsListInfo.total"
+            :continueNum="5"
+          ></Pagination>
         </div>
       </div>
     </div>
@@ -336,17 +309,21 @@ export default {
     SearchSelector,
   },
   computed: {
+
+    ...mapState({
+      goodsListInfo:state=>state.search.goodsListInfo
+    }),
     // ...mapGetters(["attrsList", "goodsList", "trademarkList"]),
     ...mapGetters(["goodsList"]), //父组件search当中只需要拿到商品列表去展示
     //attrsList  trademarkList 两个数据是子组件需要展示的，到子组件当中去获取，可以避免组件通信
 
-    sortFlag(){
-      return this.searchParams.order.split(':')[0]
+    sortFlag() {
+      return this.searchParams.order.split(":")[0];
     },
 
-    sortType(){
-      return this.searchParams.order.split(':')[1]
-    }
+    sortType() {
+      return this.searchParams.order.split(":")[1];
+    },
   },
 
   watch: {
