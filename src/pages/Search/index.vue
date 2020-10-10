@@ -95,9 +95,12 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
+                    <router-link :to="'/detail/'+ goods.id"> 
+                      <img :src="goods.defaultImg"/>
+                    </router-link>
+                    <!-- <a href="item.html" target="_blank"
                       ><img :src="goods.defaultImg"
-                    /></a>
+                    /></a> -->
                   </div>
                   <div class="price">
                     <strong>
@@ -106,12 +109,15 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a
+                    <!-- <a
                       target="_blank"
                       href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
                       >{{ goods.title }}</a
-                    >
+                    > -->
+                   <router-link :to="'/detail/'+ goods.id"> 
+                      {{ goods.title }}
+                    </router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -136,6 +142,7 @@
             :pageSize="searchParams.pageSize"
             :total="goodsListInfo.total"
             :continueNum="5"
+            @changePageNum="changePageNum"
           ></Pagination>
         </div>
       </div>
@@ -210,6 +217,13 @@ export default {
     this.getGoodsListInfo();
   },
   methods: {
+    changePageNum(page) {
+      // 点击哪个page就传哪个page
+      this.searchParams.pageNo = page;
+      // 重新发送请求
+      this.getGoodsListInfo();
+    },
+
     sortGoods(sortFlag) {
       let originSortFlag = this.searchParams.order.split(":")[0];
       let originSortType = this.searchParams.order.split(":")[1];
@@ -222,12 +236,14 @@ export default {
         newOrder = `${sortFlag}:desc`;
       }
       // 更新新的排序
+      this.searchParams.pageNo = 1
       this.searchParams.order = newOrder;
       // 重新发请求
       this.getGoodsListInfo();
     },
 
     removeProps(index) {
+      this.searchParams.pageNo = 1
       // 找到index下标，删除1个
       this.searchParams.props.splice(index, 1);
       // 重新发送请求
@@ -238,17 +254,21 @@ export default {
       let prop = `${attr.attrId}:${attrValue}:${attr.attrName}`;
       let repeat = this.searchParams.props.some((item) => item === prop);
       if (repeat) return;
+       this.searchParams.pageNo = 1
       this.searchParams.props.push(prop);
       this.getGoodsListInfo();
+     
     },
     // 删除面包屑品牌名
     removeTrademark() {
+      this.searchParams.pageNo = 1
       this.searchParams.trademark = undefined;
       // 重新发送请求
       this.getGoodsListInfo();
     },
 
     searchForTrademark(trademark) {
+      this.searchParams.pageNo = 1
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getGoodsListInfo();
     },
@@ -259,12 +279,14 @@ export default {
 
     // 删除面包屑query参数
     removeCategoryName() {
+      this.searchParams.pageNo = 1
       this.searchParams.categoryName = undefined;
       this.$router.replace({ name: "search", params: this.$route.params });
     },
 
     // 删除面包屑params参数
     removeKeyword() {
+      this.searchParams.pageNo = 1
       this.searchParams.keyword = undefined;
       // 通知header组件把输入框当中的keyword清空
       this.$bus.$emit("clearKeyword");
