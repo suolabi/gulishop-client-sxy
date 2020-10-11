@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
+    <img :src="defaultImg.imgUrl" />
     <div class="event"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+      <img :src="defaultImg.imgUrl" />
     </div>
     <div class="mask"></div>
   </div>
@@ -12,6 +12,17 @@
 <script>
   export default {
     name: "Zoom",
+    data() {
+      return {
+        defaultIndex :0
+      }
+    },
+    props:['skuImageList'],
+    computed:{
+      defaultImg() {
+            return this.skuImageList[this.defaultIndex] || []
+      }
+    }
   }
 </script>
 
