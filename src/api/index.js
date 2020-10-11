@@ -10,31 +10,31 @@ import mockAjax from '@/ajax/mockAjax'
 // 三级列表数据
 // /api/product/getBaseCategoryList
 // GET
-export const reqCategoryList = ()=>{
+export const reqCategoryList = () => {
     return Ajax({
         // 这里是配置对象,不能改
         // 不用加api/,axios封装已经配置过了
-        url:'/product/getBaseCategoryList',
+        url: '/product/getBaseCategoryList',
         // 这里大小写都行，最终都转换为大写
-        method:'get'
+        method: 'get'
     })
 }
 
 
 // 使用mock数据接口发banner数据请求
-export const reqBannerList = ()=>{
+export const reqBannerList = () => {
     return mockAjax({
-        url:'/banner',
-        method:'get'
+        url: '/banner',
+        method: 'get'
     })
 }
 
 
 // 使用mock数据接口发floor数据请求
-export const reqFloorList = ()=>{
+export const reqFloorList = () => {
     return mockAjax({
-        url:'/floor',
-        method:'get'
+        url: '/floor',
+        method: 'get'
     })
 }
 
@@ -52,11 +52,11 @@ export const reqFloorList = ()=>{
 //     "trademark": "4:小米"
 //   }
 
-export const reqGoodsListInfo = (searchParams)=>{
+export const reqGoodsListInfo = (searchParams) => {
     return Ajax({
-        url:"/list",
-        method:'post',
-        data:searchParams  // 必须是对象
+        url: "/list",
+        method: 'post',
+        data: searchParams // 必须是对象
     })
 }
 
@@ -65,3 +65,17 @@ export const reqGoodsListInfo = (searchParams)=>{
 //如果搜索参数当中有东西，那么返回的就是按照这些参数搜索到的商品信息
 //我们测试的时候可以使用{}去作为参数发请求，但是不能不传递参数，不传递那么就相当于没有传递参数undefined，会报错
 // reqGoodsListInfo({})   
+
+
+// 获取商品详情数据
+// /api/item/{ skuId }
+// get
+export const reqGoodsDetailInfo = (skuId) => {
+    return Ajax({
+        url: `/item/${ skuId }`,
+        method: 'GET'
+    })
+
+}
+
+reqGoodsDetailInfo()

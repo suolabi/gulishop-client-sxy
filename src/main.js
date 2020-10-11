@@ -6,7 +6,7 @@ import "@/mock/mockServer"
 
 Vue.config.productionTip = false
 
-// import '@/api'
+import '@/api'
 
 // import {reqCategoryList} from '@/api'
 // reqCategoryList()
