@@ -17,10 +17,18 @@
         defaultIndex :0
       }
     },
+    mounted(){
+      this.$bus.$on('changeDefaultIndex',this.changeDefaultIndex)
+    },
     props:['skuImageList'],
     computed:{
       defaultImg() {
             return this.skuImageList[this.defaultIndex] || []
+      }
+    },
+    methods:{
+      changeDefaultIndex(index){
+        this.defaultIndex=index
       }
     }
   }
