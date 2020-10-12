@@ -99,12 +99,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="$event.target.value*1 > 1? skuNum = $event.target.value*1 : skuNum =1"/>
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum > 1? skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -349,6 +349,11 @@ import Zoom from "./Zoom/Zoom";
 
 export default {
   name: "Detail",
+  data() {
+    return {
+      skuNum:1
+    }
+  },
   mounted() {
     this.getGoodsDetailInfo();
   },
@@ -363,6 +368,19 @@ export default {
       spuSaleAttrValueList.forEach((item) => (item.isChecked = "0"));
       //当前选中的为1
       spuSaleAttrValue.isChecked = "1";
+    },
+
+    // 加入购物车
+    async addShopCart(){
+      try {
+        const result = await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.skuInfo.id,skuNum:this.skuNum})
+        alert('添加购物车成功，确认自动跳转至添加购物车成功页面')
+        sessionStorage.setItem("SKUINFO_KEY",JSON.stringify(this.skuInfo))
+        this.$router.push(`/addcartsuccess?skuNum=${this.skuNum}`)
+      } catch (error) {
+        alert('添加购物车失败'+error.message);
+      }
+      
     },
   },
   computed: {
