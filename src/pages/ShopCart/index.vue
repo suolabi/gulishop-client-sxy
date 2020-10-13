@@ -17,7 +17,7 @@
           :key="cart.id"
         >
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked" />
+            <input type="checkbox" name="chk_list" :checked="cart.isChecked"  @click="changeIsChecked(cart)"/>
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -115,6 +115,15 @@ export default {
         alert("修改购物车数量失败" + error.message);
       }
     },
+
+    async changeIsChecked(cart){
+      try {
+        await this.$store.dispatch('updateCartIsChecked',{skuId:cart.skuId,isChecked:cart.isChecked === 1? 0:1})
+        this.getShopCartList();
+      } catch (error) {
+        alert('请求修改购物车的选中状态失败'+error.message)
+      }
+    }
   },
   computed: {
     ...mapState({
@@ -144,7 +153,7 @@ export default {
     // 全选
     isAllCheck: {
       get() {
-        return this.shopCartList.every((item) => item.isChecked === 1);
+        return this.shopCartList.every(item => item.isChecked === 1) && this.shopCartList.length > 0;
       },
     },
   },
