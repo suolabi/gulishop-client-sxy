@@ -1,12 +1,16 @@
-import {reqAddOrUpdateShopCart} from '@/api'
+import {reqAddOrUpdateShopCart,reqShopCartList} from '@/api'
 // 书写四个核心对象
 //存数据的地方，多个属性的对象
 const state = {
-
+    shopCartList:[]
 }
 
 //直接修改数据的地，是多个方法的一个对象  方法当中不能出现if  for   异步操作
-const mutations = {}
+const mutations = {
+    RECEIVESHOPCARTLIST(state,shopCartList){
+        state.shopCartList = shopCartList
+    }
+}
 
 
 //和用户对接的地方  也是多个方法的一个对象 方法当中可以出现if  for  异步操作
@@ -17,6 +21,13 @@ const actions = {
             return 'ok'
         }else {
             return Promise.reject(new Error('添加购物车失败'))
+        }
+    },
+
+    async getShopCartList({commit}){
+        const result = await reqShopCartList()
+        if(result.code === 200) {
+            commit('RECEIVESHOPCARTLIST',result.data)
         }
     }
 }

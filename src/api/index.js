@@ -94,3 +94,15 @@ export const reqAddOrUpdateShopCart = (skuId,skuNum) =>{
         method:'POST'
     })
 }
+
+
+// 获取购物车列表
+// /api/cart/cartList
+// GET
+
+export const reqShopCartList= ()=>{
+    return Ajax({
+        url:'/cart/cartList',
+        method:'GET'
+    })
+}

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import store from '@/store'
 
 
 //创建一个新的实例
@@ -14,6 +15,13 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use( config=> {
     NProgress.start();
+
+    // 获取userTempId值
+    let userTempId = store.state.user.userTempId
+    if(userTempId){
+        // config是请求报文
+        config.headers.userTempId = userTempId
+    }
     return config;
 });
 // }, function (error) {
