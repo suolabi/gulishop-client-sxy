@@ -116,3 +116,30 @@ export const reqUpdateCartIsChecked = (skuId,isChecked) =>{
         method:'GET'
     })
 }
+
+
+
+// /api/cart/deleteCart/{skuId}
+// DELETE
+// 参数 skuId
+
+export const reqDeleteCart = (skuId) => {
+    return Ajax({
+        url:`/cart/deleteCart/${skuId}`,
+        method:'delete'
+    })
+}
+
+
+// 注册用户请求
+// /api/user/passport/register
+// POST
+// 参数请求体参数
+export const reqUserRegister = (userInfo) =>{
+    return Ajax({
+        url:'/user/passport/register',
+        method:'post',
+        data:userInfo
+    })
+
+}

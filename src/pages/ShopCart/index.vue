@@ -52,7 +52,7 @@
             <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="javascript:;" class="sindelet" @click="deleteCart(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -65,7 +65,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:;" @click="deleteAllCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -123,6 +123,29 @@ export default {
       } catch (error) {
         alert('请求修改购物车的选中状态失败'+error.message)
       }
+    },
+
+    //删除单个购物车商品
+    async deleteCart(cart){
+      // console.log(cart)
+      try {
+        await this.$store.dispatch('deleteCart',cart.skuId)
+        this.getShopCartList();
+      } catch (error) {
+        alert('删除购物车商品失败'+error.message)
+      }
+    },
+    
+    // 删除多个
+    
+    async deleteAllCart(){
+      try {
+        await this.$store.dispatch('deleteAllCar')
+        this.getShopCartList
+      } catch (error) {
+        alert('删除购物车商品失败'+error.message)
+      }
+      
     }
   },
   computed: {
@@ -155,6 +178,19 @@ export default {
       get() {
         return this.shopCartList.every(item => item.isChecked === 1) && this.shopCartList.length > 0;
       },
+      async set(val){
+        try {
+          // 还是需要发请求
+          const result = await this.$store.dispatch('updateAllCartIsChecked',val? 1:0)
+          console.log(result);
+          // 如果成功，发请求更新购物车列表
+          this.getShopCartList();
+        } catch (error) {
+          alert('更新购物车列表失败',error.message)
+        }
+
+
+      }
     },
   },
 };
