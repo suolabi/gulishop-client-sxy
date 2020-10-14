@@ -1,13 +1,18 @@
 import {getUserTempId,} from '@/utils/userabout'
-import {reqUserRegister} from '@/api'
+import {reqUserRegister,reqUserLogin} from '@/api'
 // 书写四个核心对象
 //存数据的地方，多个属性的对象
 const state = {
-  userTempId:getUserTempId()
+  userTempId:getUserTempId(),
+  userInfo:{}
 }
 
 //直接修改数据的地，是多个方法的一个对象  方法当中不能出现if  for   异步操作
-const mutations = {}
+const mutations = {
+  RECIEVEUSERINFO(state,userInfo){
+    state.userInfo = userInfo
+  }
+}
 
 
 //和用户对接的地方  也是多个方法的一个对象 方法当中可以出现if  for  异步操作
@@ -18,6 +23,16 @@ const actions = {
       return 'ok'
     }else{
       return Promise.reject(new Error('faild'))
+    }
+  },
+
+  async userLogin({commit},userInfo) {
+    const result = await reqUserLogin(userInfo)
+    if(result.code === 200) {
+      commit('RECIEVEUSERINFO',result.data)
+      return '登录成功'
+    }else {
+      return Promise.reject(new Error('登录失败'))
     }
   }
 }

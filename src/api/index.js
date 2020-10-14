@@ -143,3 +143,15 @@ export const reqUserRegister = (userInfo) =>{
     })
 
 }
+
+// 登录请求
+// /api/user/passport/login
+// POST
+export const reqUserLogin = (userInfo) =>{
+    return Ajax({
+        url:"/user/passport/login",
+        method:'post',
+        data:userInfo
+    })
+
+}

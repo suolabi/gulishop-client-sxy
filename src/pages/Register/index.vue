@@ -87,15 +87,14 @@ export default {
 
     async register() {
       let { mobile, code, password,password2 } = this;
-      // let userInfo = {
-        
-        
-      // };
+      let userInfo = {
+        mobile,
+        password,
+        code,
+      };
       try {
         if (mobile && code && password && password2&&(password === password2)) {
-          await this.$store.dispatch("userRegister", {mobile,
-        password,
-        code,});
+          await this.$store.dispatch("userRegister", userInfo);
           alert("注册成功，自动跳转登录页面");
           this.$route.push("/login");
         }
