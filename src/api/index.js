@@ -155,3 +155,28 @@ export const reqUserLogin = (userInfo) =>{
     })
 
 }
+
+
+// 退出登录请求
+// /api/user/passport/logout
+// get 
+// 参数无
+export const reqUserLogout = () =>{
+    return Ajax({
+        url:'/user/passport/logout',
+        method:'get'
+    })
+}
+
+
+// .获取订单交易页信息
+// /api/order/auth/trade
+// get
+// 参数无
+
+export const reqTradeInfo =() =>{
+    return Ajax({
+        url:'/order/auth/trade',
+        method:'GET'
+    })
+}

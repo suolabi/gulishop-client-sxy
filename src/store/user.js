@@ -1,16 +1,21 @@
 import {getUserTempId,} from '@/utils/userabout'
-import {reqUserRegister,reqUserLogin} from '@/api'
+import {reqUserRegister,reqUserLogin,reqUserLogout} from '@/api'
 // 书写四个核心对象
 //存数据的地方，多个属性的对象
 const state = {
   userTempId:getUserTempId(),
-  userInfo:{}
+  userInfo:JSON.parse(localStorage.getItem('USERINFO_KEY')) || {}
+  
 }
 
 //直接修改数据的地，是多个方法的一个对象  方法当中不能出现if  for   异步操作
 const mutations = {
   RECIEVEUSERINFO(state,userInfo){
     state.userInfo = userInfo
+  },
+
+  RESETUSERINFO(state){
+    state.userInfo = {}
   }
 }
 
@@ -30,10 +35,28 @@ const actions = {
     const result = await reqUserLogin(userInfo)
     if(result.code === 200) {
       commit('RECIEVEUSERINFO',result.data)
+      //登录成功把用户的信息存一份
+      localStorage.setItem('USERINFO_KEY',JSON.stringify(result.data))
       return '登录成功'
     }else {
-      return Promise.reject(new Error('登录失败'))
+      return Promise.reject(new Error('faild'))
     }
+  },
+
+
+
+  // 退出登录
+  async userLogout({commit}){
+    const result = await reqUserLogout()
+    if(result.code === 200) {
+      // 清空userinfo信息
+      commit('RESETUSERINFO')
+      localStorage.removeItem('USERINFO_KEY')
+      return 'success'
+    }else{
+      return Promise.reject(new Error('faild'))
+    }
+
   }
 }
 

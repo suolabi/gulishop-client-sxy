@@ -93,9 +93,14 @@ export default {
           mobile,
           password,
         };
-        await this.$store.dispatch("userLogin", userInfo);
-        alert('登录成功，跳转到首页去了')
-        this.$router.push('/home')
+
+        try {
+          await this.$store.dispatch("userLogin", userInfo);
+          alert("登录成功，跳转到首页去了");
+          this.$router.push("/home");
+        } catch (error) {
+          alert("登录失败" + error.message)
+        }
       }
     },
   },

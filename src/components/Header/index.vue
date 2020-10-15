@@ -5,7 +5,15 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.user.userInfo.name">
+            
+            <a href="javascript:;">{{$store.state.user.userInfo.name}}</a>
+            <!-- <router-link to="/login">{{}}</router-link> -->
+            <a href="javascript:;" class="register" @click="logout">退出登录</a>
+            <!-- <router-link to="/register" class="register">退出登录</router-link> -->
+          </p>
+
+          <p v-else>
             <span>请</span>
             <!-- <a href="###">登录</a> -->
             <router-link to="/login">登录</router-link>
@@ -15,7 +23,7 @@
         </div>
         <div class="typeList">
           <a href="###">我的订单</a>
-          <router-link to="/shopcart" >我的购物车</router-link>
+          <router-link to="/shopcart">我的购物车</router-link>
           <!-- <a href="###">我的购物车</a> -->
           <a href="###">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
@@ -65,12 +73,12 @@ export default {
       keyword: "",
     };
   },
-  mounted(){
-    this.$bus.$on('clearKeyword',this.clearKeyword)
+  mounted() {
+    this.$bus.$on("clearKeyword", this.clearKeyword);
   },
   methods: {
-    clearKeyword(){
-      this.keyword = ""
+    clearKeyword() {
+      this.keyword = "";
     },
     toSearch() {
       let location = {
@@ -90,6 +98,18 @@ export default {
         this.$router.push(location);
       }
     },
+
+    // 请求退出登录
+    async logout(){
+      try {
+        await this.$store.dispatch('userLogout')
+        alert('退出登录成功')
+        this.$router.push('/')
+      } catch (error) {
+        alert('退出登录失败'+error.message)
+      }
+
+    }
   },
 };
 </script>
