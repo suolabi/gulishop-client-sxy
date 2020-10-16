@@ -12,7 +12,7 @@
       </h3>
       <div class="content">
         <label>手机号:</label>
-        <input type="text" placeholder="请输入你的手机号" v-model="mobile" />
+        <input type="text" placeholder="请输入你的手机号" v-model="phone" />
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
@@ -74,7 +74,7 @@ export default {
   name: "Register",
   data() {
     return {
-      mobile: "",
+      phone: "",
       code: "",
       password: "",
       password2: "",
@@ -86,17 +86,17 @@ export default {
     },
 
     async register() {
-      let { mobile, code, password,password2 } = this;
+      let { phone, code, password,password2 } = this;
       let userInfo = {
-        mobile,
+        phone,
         password,
         code,
       };
       try {
-        if (mobile && code && password && password2&&(password === password2)) {
+        if (phone && code && password && password2&&(password === password2)) {
           await this.$store.dispatch("userRegister", userInfo);
           alert("注册成功，自动跳转登录页面");
-          this.$route.push("/login");
+          this.$router.push("/login");
         }
       } catch (error) {
         alert('注册失败'+error.message)

@@ -20,7 +20,7 @@
                 <input
                   type="text"
                   placeholder="邮箱/用户名/手机号"
-                  v-model="mobile"
+                  v-model="phone"
                 />
               </div>
               <div class="input-text clearFix">
@@ -81,16 +81,16 @@ export default {
   name: "Login",
   data() {
     return {
-      mobile: "",
+      phone: "",
       password: "",
     };
   },
   methods: {
     async login() {
-      let { mobile, password } = this;
-      if (mobile && password) {
+      let { phone, password } = this;
+      if (phone && password) {
         let userInfo = {
-          mobile,
+          phone,
           password,
         };
 
