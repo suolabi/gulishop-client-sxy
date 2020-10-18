@@ -4,7 +4,8 @@ import {
 // 书写四个核心对象
 //存数据的地方，多个属性的对象
 const state = {
-    tradeInfo: {}
+    tradeInfo: {},
+    
 }
 
 //直接修改数据的地，是多个方法的一个对象  方法当中不能出现if  for   异步操作

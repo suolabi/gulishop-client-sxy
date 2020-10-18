@@ -3,6 +3,7 @@ import App from '@/App'
 import router from '@/router'
 import store from '@/store'
 import "@/mock/mockServer"
+import * as API from '@/api'
 
 
 Vue.config.productionTip = false
@@ -24,6 +25,7 @@ Vue.component('Pagination',Pagination)
 new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   el:'#app',
   //1、定义带注册  2、使用组件  3、渲染（依赖vue的一个loader去解析的vue-template-compiler）

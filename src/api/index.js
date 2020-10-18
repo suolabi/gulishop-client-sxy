@@ -88,10 +88,10 @@ export const reqGoodsDetailInfo = (skuId) => {
 //     "ok": true
 // }
 
-export const reqAddOrUpdateShopCart = (skuId,skuNum) =>{
+export const reqAddOrUpdateShopCart = (skuId, skuNum) => {
     return Ajax({
-        url:`/cart/addToCart/${ skuId }/${ skuNum }`,
-        method:'POST'
+        url: `/cart/addToCart/${ skuId }/${ skuNum }`,
+        method: 'POST'
     })
 }
 
@@ -100,20 +100,20 @@ export const reqAddOrUpdateShopCart = (skuId,skuNum) =>{
 // /api/cart/cartList
 // GET
 
-export const reqShopCartList= ()=>{
+export const reqShopCartList = () => {
     return Ajax({
-        url:'/cart/cartList',
-        method:'GET'
+        url: '/cart/cartList',
+        method: 'GET'
     })
 }
 
 
 //请求修改购物车的选中状态
 // /api/cart/checkCart/{skuId}/{isChecked}   GET
-export const reqUpdateCartIsChecked = (skuId,isChecked) =>{
+export const reqUpdateCartIsChecked = (skuId, isChecked) => {
     return Ajax({
-        url:`/cart/checkCart/${skuId}/${isChecked}`,
-        method:'GET'
+        url: `/cart/checkCart/${skuId}/${isChecked}`,
+        method: 'GET'
     })
 }
 
@@ -125,8 +125,8 @@ export const reqUpdateCartIsChecked = (skuId,isChecked) =>{
 
 export const reqDeleteCart = (skuId) => {
     return Ajax({
-        url:`/cart/deleteCart/${skuId}`,
-        method:'delete'
+        url: `/cart/deleteCart/${skuId}`,
+        method: 'delete'
     })
 }
 
@@ -135,11 +135,11 @@ export const reqDeleteCart = (skuId) => {
 // /api/user/passport/register
 // POST
 // 参数请求体参数
-export const reqUserRegister = (userInfo) =>{
+export const reqUserRegister = (userInfo) => {
     return Ajax({
-        url:'/user/passport/register',
-        method:'post',
-        data:userInfo
+        url: '/user/passport/register',
+        method: 'post',
+        data: userInfo
     })
 
 }
@@ -147,11 +147,11 @@ export const reqUserRegister = (userInfo) =>{
 // 登录请求
 // /api/user/passport/login
 // POST
-export const reqUserLogin = (userInfo) =>{
+export const reqUserLogin = (userInfo) => {
     return Ajax({
-        url:"/user/passport/login",
-        method:'post',
-        data:userInfo
+        url: "/user/passport/login",
+        method: 'post',
+        data: userInfo
     })
 
 }
@@ -161,10 +161,10 @@ export const reqUserLogin = (userInfo) =>{
 // /api/user/passport/logout
 // get 
 // 参数无
-export const reqUserLogout = () =>{
+export const reqUserLogout = () => {
     return Ajax({
-        url:'/user/passport/logout',
-        method:'get'
+        url: '/user/passport/logout',
+        method: 'get'
     })
 }
 
@@ -174,9 +174,32 @@ export const reqUserLogout = () =>{
 // get
 // 参数无
 
-export const reqTradeInfo =() =>{
+export const reqTradeInfo = () => {
     return Ajax({
-        url:'/order/auth/trade',
+        url: '/order/auth/trade',
+        method: 'GET'
+    })
+}
+
+// 提交订单
+// /api/order/auth/submitOrder?tradeNo={tradeNo}
+// post
+// 参数：traderNo订单编号(拼接在路径中)；tradeInfo
+export const reqSubmitOrder = (tradeNo, tradeInfo) => {
+    return Ajax({
+        url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        method:'post',
+        data:tradeInfo
+    })
+}
+
+
+// 获取订单支付信息
+// /api/payment/weixin/createNative/{orderId}
+// GET
+export const reqPayInfo = (orderId) =>{
+    return Ajax({
+        url:`/payment/weixin/createNative/${orderId}`,
         method:'GET'
     })
 }
