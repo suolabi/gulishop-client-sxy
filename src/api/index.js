@@ -214,3 +214,15 @@ export const reqOrderStatus = (orderId) =>{
         method:'get'
     })
 }
+
+// 获取订单列表
+// /api/order/auth/{page}/{limit}
+// get
+// 参数  page:页数  limit：每页几个
+
+export const reqMyOrderInfo = (page,limit) =>{
+    return Ajax({
+        url:`/order/auth/${page}/${limit}`,
+        method:'get'
+    })
+}

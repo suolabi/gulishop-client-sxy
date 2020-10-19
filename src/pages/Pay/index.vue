@@ -130,9 +130,14 @@ export default {
           center: true,
           beforeClose:(action,instance,done) =>{
             if(action === "confirm"){
-              if(this.orderStatus !== 200){
-                this.$message.info('请确保支付成功')
-              }
+              // if(this.orderStatus !== 200){
+              //   this.$message.info('请确保支付成功')
+              // }
+              clearInterval(this.timer)
+              this.timer = null
+              done()
+              // 跳转到支付成功页面
+              this.$router.push('/paysuccess')
             }else if(action === "cancel"){
               this.$message.success('请联系前台小姐姐')
               clearInterval(this.timer)
@@ -141,7 +146,7 @@ export default {
               done()
             }
           }
-        });
+        }).then(()=>{}).catch(()=>{})
         // 3.发请求连续发送查询状态码
         if(!this.timer){
           this.timer =setInterval( async () =>{
