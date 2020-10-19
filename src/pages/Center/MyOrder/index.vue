@@ -48,59 +48,62 @@
               </td>
 
               <template v-if="index === 0">
-                
-                  <td :rowspan="order.orderDetailList.length" width="8%" class="center">
-                    {{ order.consignee }}
-                  </td>
-                  <td :rowspan="order.orderDetailList.length" width="13%" class="center">
-                    <ul class="unstyled">
-                      <li>总金额¥{{ order.totalAmount }}</li>
-                    <li>{{order.paymentWay === 'ONLINE'?'在线支付':'货到付款'}}</li>
-                    </ul>
-                  </td>
-                  <td :rowspan="order.orderDetailList.length" width="8%" class="center">
-                    <a href="#" class="btn">{{ order.orderStatusName }} </a>
-                  </td>
-                  <td :rowspan="order.orderDetailList.length" width="13%" class="center">
-                    <ul class="unstyled">
-                      <li>
-                        <a href="mycomment.html" target="_blank">评价|晒单</a>
-                      </li>
-                    </ul>
-                  </td>
-                
+                <td
+                  :rowspan="order.orderDetailList.length"
+                  width="8%"
+                  class="center"
+                >
+                  {{ order.consignee }}
+                </td>
+                <td
+                  :rowspan="order.orderDetailList.length"
+                  width="13%"
+                  class="center"
+                >
+                  <ul class="unstyled">
+                    <li>总金额¥{{ order.totalAmount }}</li>
+                    <li>
+                      {{
+                        order.paymentWay === "ONLINE" ? "在线支付" : "货到付款"
+                      }}
+                    </li>
+                  </ul>
+                </td>
+                <td
+                  :rowspan="order.orderDetailList.length"
+                  width="8%"
+                  class="center"
+                >
+                  <a href="#" class="btn">{{ order.orderStatusName }} </a>
+                </td>
+                <td
+                  :rowspan="order.orderDetailList.length"
+                  width="13%"
+                  class="center"
+                >
+                  <ul class="unstyled">
+                    <li>
+                      <a href="mycomment.html" target="_blank">评价|晒单</a>
+                    </li>
+                  </ul>
+                </td>
               </template>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="choose-order">
-        <div class="pagination">
-          <ul>
-            <li class="prev disabled">
-              <a href="javascript:">«上一页</a>
-            </li>
-            <li class="page actived">
-              <a href="javascript:">1</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">2</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">3</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">4</a>
-            </li>
-
-            <li class="next disabled">
-              <a href="javascript:">下一页»</a>
-            </li>
-          </ul>
-          <div>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;共2页&nbsp;</span>
-          </div>
-        </div>
+      <el-pagination
+          background
+          :current-page="page"
+          :page-size="limit"
+          :total="myOrderInfo.total"
+          :pager-count="7"
+          @current-change="getMyOrderInfo"
+          @size-change="handleSizeChange"
+          :page-sizes="[3, 5, 7, 10]"
+          layout="prev, pager, next, jumper, ->, sizes,total"
+        ></el-pagination>
       </div>
     </div>
     <!--猜你喜欢-->
@@ -172,12 +175,17 @@ export default {
     this.getMyOrderInfo();
   },
   methods: {
-    async getMyOrderInfo() {
+    async getMyOrderInfo(page=1) {
+      this.page = page; //省去点击分页的回调
       const result = await this.$API.reqMyOrderInfo(this.page, this.limit);
       if (result.code === 200) {
         this.myOrderInfo = result.data;
       }
     },
+    handleSizeChange(pageSize){
+      this.limit = pageSize
+      this.getMyOrderInfo();
+    }
   },
   computed: {
     myOrderList() {

@@ -16,18 +16,19 @@ import '@/api'
 //全局注册的各种组件，因为很多地方用到
 import TypeNav from '@/components/TypeNav'
 import SliderLoop from '@/components/SliderLoop'
-import Pagination from '@/components/Pagination'
+import MyPagination from '@/components/MyPagination'
 
 Vue.component('TypeNav',TypeNav)
 Vue.component('SliderLoop',SliderLoop)
-Vue.component('Pagination',Pagination)
+Vue.component('MyPagination',MyPagination)
 
-import { MessageBox,Message,Button} from 'element-ui'
+import { MessageBox,Message,Button,Pagination} from 'element-ui'
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$message = Message;
 
 Vue.use(Button)
+Vue.use(Pagination)
 
 
 

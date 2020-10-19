@@ -137,13 +137,13 @@
               </li>
             </ul>
           </div>
-          <Pagination
+          <MyPagination
             :currentPageNum="searchParams.pageNo"
             :pageSize="searchParams.pageSize"
             :total="goodsListInfo.total"
             :continueNum="5"
             @changePageNum="changePageNum"
-          ></Pagination>
+          ></MyPagination>
         </div>
       </div>
     </div>
