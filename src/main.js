@@ -22,6 +22,15 @@ Vue.component('TypeNav',TypeNav)
 Vue.component('SliderLoop',SliderLoop)
 Vue.component('Pagination',Pagination)
 
+import { MessageBox,Message,Button} from 'element-ui'
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$message = Message;
+
+Vue.use(Button)
+
+
+
 new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this
