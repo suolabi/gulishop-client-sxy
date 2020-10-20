@@ -4,6 +4,7 @@ import router from '@/router'
 import store from '@/store'
 import "@/mock/mockServer"
 import * as API from '@/api'
+import './validate'
 
 
 Vue.config.productionTip = false
@@ -29,6 +30,13 @@ Vue.prototype.$message = Message;
 
 Vue.use(Button)
 Vue.use(Pagination)
+
+import VueLazyload from 'vue-lazyload'
+import loading from '@/assets/images/loading.gif'
+Vue.use(VueLazyload, { // 内部自定义了一个指令lazy
+  loading,  // 指定未加载得到图片之前的loading图片
+})
+
 
 
 
